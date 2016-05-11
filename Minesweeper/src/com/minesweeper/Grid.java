@@ -10,6 +10,10 @@ public class Grid {
 		initializeCases();
 	}
 
+	public Grid(int i, int j, int k) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Cell[][] getGrid() {
 		return grid;
 	}

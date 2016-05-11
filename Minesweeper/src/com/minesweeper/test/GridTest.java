@@ -12,7 +12,20 @@ public class GridTest {
 
 	@Test
 	public void getGridTest() {
-		fail("not yet  implememented");
+		Grid gridForByTen = new Grid(4, 10, 14);
+		assertEquals(4,gridForByTen.getGrid().length);
+		assertEquals(10,(gridForByTen.getGrid())[0].length);
+		int mines =0;
+		Cell[][] grid = gridForByTen.getGrid();
+		for(int i=0; i<grid.length ;i++)
+			for(int j=0; j<grid[0].length;j++)
+			{
+				if(grid[i][j].isMine())
+				{
+					mines++;
+				}
+			}
+		assertEquals(14, mines);
 	}
 	@Test
 	public void clickOnMineTest() {
