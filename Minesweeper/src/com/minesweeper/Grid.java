@@ -1,6 +1,9 @@
 package com.minesweeper;
 
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.Random;
+import java.util.Set;
 
 public class Grid {
 	private Cell[][] grid;
@@ -10,8 +13,18 @@ public class Grid {
 		initializeCases();
 	}
 
-	public Grid(int i, int j, int k) {
-		// TODO Auto-generated constructor stub
+	public Grid(int l, int c, int mines) {
+		if (l <= 0)
+			throw new IllegalArgumentException(
+					"Number of lines must be positive");
+		if (c <= 0)
+			throw new IllegalArgumentException(
+					"Number of columns must be positive");
+
+		grid = new Cell[l][c];
+
+		setMines(mines);
+		initializeCases();
 	}
 
 	public Cell[][] getGrid() {
@@ -29,6 +42,10 @@ public class Grid {
 		while (!positions.isEmpty()) {
 			Position pos = positions.pop();
 			setCaseAndAdjacentsVisible(pos.getLine(), pos.getColumn());
+		}
+		if(grid[l][c].isMine())
+		{
+			grid[l][c].setVisible(true);
 		}
 		return !grid[l][c].isMine();
 	}
@@ -135,6 +152,38 @@ public class Grid {
 			return 0;
 		}
 
+	}
+
+	private void setMines(int mines) {
+		if (mines <= 0)
+			throw new IllegalArgumentException(
+					"Number of mines must be positive");
+		if (mines >= getNumberOfCells())
+			throw new IllegalArgumentException(
+					"Number of mines must be strictly inferior to grid's size");
+
+		Random random = new Random(); // Ideally just create one instance
+										// globally
+		Set<Integer> generated = new LinkedHashSet<Integer>();
+		while (generated.size() < mines) {
+			Integer next = random.nextInt(getNumberOfCells());
+
+			generated.add(next);
+		}
+		for (int mineposition : generated) {
+
+			int column = 0;
+			while (mineposition - grid.length >= 0) {
+				column++;
+				mineposition = mineposition - grid.length;
+			}
+			Cell cell = new Cell();
+			cell.setMine(true);
+			grid[mineposition][column] = cell;
+		}
+	}
+	private int getNumberOfCells() {
+		return (grid.length) * (grid[0].length);
 	}
 
 }
