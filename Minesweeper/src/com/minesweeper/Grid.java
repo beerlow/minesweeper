@@ -19,13 +19,65 @@ public class Grid {
 	}
 	
 	public boolean click(int l, int c) {
-		if (l < 0 && l >= grid.length || c < 0 && l >= grid[0].length)
+		if (l < 0 || l >= grid.length || c < 0 || c >= grid[0].length)
 			throw new IllegalArgumentException("Invalid position");
-	 
-			setCaseAndAdjacentsVisible(l, c);
-		 
+		LinkedList<Position> positions = getAllBlankAdjacents(l, c);
+		while (!positions.isEmpty()) {
+			Position pos = positions.pop();
+			setCaseAndAdjacentsVisible(pos.getLine(), pos.getColumn());
+		}
 		return !grid[l][c].isMine();
 	}
+	private LinkedList<Position> getAllBlankAdjacents(int l, int c) {
+
+		LinkedList<Position> AllBlankAdjacents = new LinkedList<Position>();
+
+		LinkedList<Position> temp = new LinkedList<Position>();
+		temp.add(new Position(l, c));
+		AllBlankAdjacents.add(new Position(l, c));
+		while (!temp.isEmpty()) {
+			Position pos = temp.pop();
+			setCaseVisible(pos.getLine(), pos.getColumn());
+			if (isNotCaseVisibleAndNoAdjacentMines(pos.getLine() + 1,
+					pos.getColumn())) {
+				Position postosave = new Position(pos.getLine() + 1, pos.getColumn());
+				temp.add(postosave);
+				AllBlankAdjacents.add(new Position(pos.getLine() + 1, pos
+						.getColumn()));
+			}
+			if (isNotCaseVisibleAndNoAdjacentMines(pos.getLine(),
+					pos.getColumn() + 1)) {
+				Position postosave = new Position(pos.getLine(), pos.getColumn() + 1);
+				temp.add(postosave);			 
+				AllBlankAdjacents.add(postosave);
+			}
+			if (isNotCaseVisibleAndNoAdjacentMines(pos.getLine() - 1,
+					pos.getColumn())) {
+				Position postosave = new Position(pos.getLine() - 1, pos.getColumn());
+				temp.add(postosave);
+				AllBlankAdjacents.add(postosave);
+			}
+			if (isNotCaseVisibleAndNoAdjacentMines(pos.getLine(),
+					pos.getColumn() - 1)) {
+				Position postosave = new Position(pos.getLine() , pos.getColumn()-1);				
+				temp.add(postosave);
+				AllBlankAdjacents.add(postosave);
+			}
+
+		}
+		return AllBlankAdjacents;
+	}
+		private boolean isNotCaseVisibleAndNoAdjacentMines(int l, int c) {
+			if (l >= 0 && l < grid.length && c >= 0 && c < grid[0].length) {
+				if (!grid[l][c].isVisible()
+						&& grid[l][c].getNumberOfAdjacentMines() == 0) {
+					return true;
+				}
+			}
+			return false;
+
+		}
+
 	private void setCaseAndAdjacentsVisible(int l, int c) {
 		LinkedList<Position> visibleCases = new LinkedList<Position>();
 		setCaseVisible(l, c);
