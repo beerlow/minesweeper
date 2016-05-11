@@ -186,4 +186,35 @@ public class Grid {
 		return (grid.length) * (grid[0].length);
 	}
 
+
+	public void printGrid() {
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[0].length; j++) {
+				if (grid[i][j].isVisible()) {
+					if (!grid[i][j].isMine())
+						{System.out.print(grid[i][j].getNumberOfAdjacentMines()
+								+ " ");
+						}
+					else {
+						System.out.print("O ");
+					}
+				}
+				else System.out.print("X ");
+			}
+			System.out.println();
+		}
+
+	
+	}
+	// TODO:to be refactored
+		public boolean isCompleted() {
+			for (int i = 0; i < grid.length; i++) {
+				for (int j = 0; j < grid[0].length; j++) {
+					if (!grid[i][j].isVisible() && !grid[i][j].isMine()) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
 }
