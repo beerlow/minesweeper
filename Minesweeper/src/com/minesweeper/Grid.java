@@ -43,7 +43,7 @@ public class Grid {
 	}
 	private int MineOnCase(int i, int j) {
 		if (i >= 0 && i < grid.length && j >= 0 && j < grid[0].length) {
-			if (grid[i][j].isMine())
+			if ( grid[i][j] != null  && grid[i][j].isMine())
 				return 1;
 			else
 				return 0;
