@@ -57,8 +57,8 @@ public class GridTest {
 		Grid gridWithAMine = new Grid(grid);
 		assertEquals(true, gridWithAMine.click(0, 0));
 		assertEquals(true, gridWithAMine.getGrid()[0][0].isVisible());
-		assertEquals(true, gridWithAMine.getGrid()[0][1].isVisible());
-		assertEquals(true, gridWithAMine.getGrid()[1][0].isVisible());
+		assertEquals(false, gridWithAMine.getGrid()[0][1].isVisible());
+		assertEquals(false, gridWithAMine.getGrid()[1][0].isVisible());
 		assertEquals(false, gridWithAMine.getGrid()[0][2].isVisible());
 		assertEquals(false, gridWithAMine.getGrid()[1][1].isVisible());
 		assertEquals(false, gridWithAMine.getGrid()[1][2].isVisible());
