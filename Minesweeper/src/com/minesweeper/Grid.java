@@ -34,7 +34,7 @@ public class Grid {
 	public void setGrid(Cell[][] grid) {
 		this.grid = grid;
 	}
-	
+
 	public boolean click(int l, int c) {
 		if (l < 0 || l >= grid.length || c < 0 || c >= grid[0].length)
 			throw new IllegalArgumentException("Invalid position");
@@ -43,61 +43,73 @@ public class Grid {
 			Position pos = positions.pop();
 			setCaseAndAdjacentsVisible(pos.getLine(), pos.getColumn());
 		}
-		if(grid[l][c].isMine())
-		{
+		if (grid[l][c].isMine()) {
 			grid[l][c].setVisible(true);
 		}
 		return !grid[l][c].isMine();
 	}
+
 	private LinkedList<Position> getAllBlankAdjacents(int l, int c) {
 
 		LinkedList<Position> AllBlankAdjacents = new LinkedList<Position>();
-
-		LinkedList<Position> temp = new LinkedList<Position>();
-		temp.add(new Position(l, c));
+		LinkedList<Position> celluleToVisit = new LinkedList<Position>();
+		LinkedList<Cell> celluleAlreadyVisited = new LinkedList<Cell>();
+		celluleToVisit.add(new Position(l, c));
 		AllBlankAdjacents.add(new Position(l, c));
-		while (!temp.isEmpty()) {
-			Position pos = temp.pop();
-			setCaseVisible(pos.getLine(), pos.getColumn());
-			if (isNotCaseVisibleAndNoAdjacentMines(pos.getLine() + 1,
-					pos.getColumn())) {
-				Position postosave = new Position(pos.getLine() + 1, pos.getColumn());
-				temp.add(postosave);
-				AllBlankAdjacents.add(new Position(pos.getLine() + 1, pos
-						.getColumn()));
-			}
-			if (isNotCaseVisibleAndNoAdjacentMines(pos.getLine(),
-					pos.getColumn() + 1)) {
-				Position postosave = new Position(pos.getLine(), pos.getColumn() + 1);
-				temp.add(postosave);			 
-				AllBlankAdjacents.add(postosave);
-			}
-			if (isNotCaseVisibleAndNoAdjacentMines(pos.getLine() - 1,
-					pos.getColumn())) {
-				Position postosave = new Position(pos.getLine() - 1, pos.getColumn());
-				temp.add(postosave);
-				AllBlankAdjacents.add(postosave);
-			}
-			if (isNotCaseVisibleAndNoAdjacentMines(pos.getLine(),
-					pos.getColumn() - 1)) {
-				Position postosave = new Position(pos.getLine() , pos.getColumn()-1);				
-				temp.add(postosave);
-				AllBlankAdjacents.add(postosave);
-			}
+		while (!celluleToVisit.isEmpty()) {
+			// printGrid() ;
+			Position pos = celluleToVisit.pop();
+			if (!celluleAlreadyVisited.contains(grid[c][l]))
+				;
+			{
+				setCaseVisible(pos.getLine(), pos.getColumn());
+				celluleAlreadyVisited.add(grid[l][c]);
+				if (isNotCaseVisibleAndNoAdjacentMines(pos.getLine() + 1,
+						pos.getColumn())) {
+					Position postosave = new Position(pos.getLine() + 1,
+							pos.getColumn());
+					celluleToVisit.add(postosave);
+					AllBlankAdjacents.add(new Position(pos.getLine() + 1, pos
+							.getColumn()));
+				}
+				if (isNotCaseVisibleAndNoAdjacentMines(pos.getLine(),
+						pos.getColumn() + 1)) {
+					Position postosave = new Position(pos.getLine(),
+							pos.getColumn() + 1);
+					celluleToVisit.add(postosave);
+					AllBlankAdjacents.add(postosave);
+				}
+				if (isNotCaseVisibleAndNoAdjacentMines(pos.getLine() - 1,
+						pos.getColumn())) {
+					Position postosave = new Position(pos.getLine() - 1,
+							pos.getColumn());
+					celluleToVisit.add(postosave);
+					AllBlankAdjacents.add(postosave);
+				}
+				if (isNotCaseVisibleAndNoAdjacentMines(pos.getLine(),
+						pos.getColumn() - 1)) {
+					Position postosave = new Position(pos.getLine(),
+							pos.getColumn() - 1);
+					celluleToVisit.add(postosave);
+					AllBlankAdjacents.add(postosave);
 
-		}
-		return AllBlankAdjacents;
-	}
-		private boolean isNotCaseVisibleAndNoAdjacentMines(int l, int c) {
-			if (l >= 0 && l < grid.length && c >= 0 && c < grid[0].length) {
-				if (!grid[l][c].isVisible()
-						&& grid[l][c].getNumberOfAdjacentMines() == 0) {
-					return true;
 				}
 			}
-			return false;
-
 		}
+
+		return AllBlankAdjacents;
+	}
+
+	private boolean isNotCaseVisibleAndNoAdjacentMines(int l, int c) {
+		if (l >= 0 && l < grid.length && c >= 0 && c < grid[0].length) {
+			if (!grid[l][c].isVisible()
+					&& grid[l][c].getNumberOfAdjacentMines() == 0) {
+				return true;
+			}
+		}
+		return false;
+
+	}
 
 	private void setCaseAndAdjacentsVisible(int l, int c) {
 		LinkedList<Position> visibleCases = new LinkedList<Position>();
@@ -122,6 +134,7 @@ public class Grid {
 		}
 
 	}
+
 	private void initializeCases() {
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[0].length; j++) {
@@ -129,7 +142,7 @@ public class Grid {
 					grid[i][j] = new Cell();
 				}
 				if (!grid[i][j].isMine()) {
-					//Calculate the number of adjacent mines
+					// Calculate the number of adjacent mines
 					grid[i][j].setNumberOfAdjacentMines(MineOnCase(i + 1, j)
 							+ MineOnCase(i - 1, j + 1)
 							+ MineOnCase(i + 1, j + 1)
@@ -142,9 +155,10 @@ public class Grid {
 		}
 
 	}
+
 	private int MineOnCase(int i, int j) {
 		if (i >= 0 && i < grid.length && j >= 0 && j < grid[0].length) {
-			if ( grid[i][j] != null  && grid[i][j].isMine())
+			if (grid[i][j] != null && grid[i][j].isMine())
 				return 1;
 			else
 				return 0;
@@ -182,39 +196,38 @@ public class Grid {
 			grid[mineposition][column] = cell;
 		}
 	}
+
 	private int getNumberOfCells() {
 		return (grid.length) * (grid[0].length);
 	}
-
 
 	public void printGrid() {
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[0].length; j++) {
 				if (grid[i][j].isVisible()) {
-					if (!grid[i][j].isMine())
-						{System.out.print(grid[i][j].getNumberOfAdjacentMines()
+					if (!grid[i][j].isMine()) {
+						System.out.print(grid[i][j].getNumberOfAdjacentMines()
 								+ " ");
-						}
-					else {
+					} else {
 						System.out.print("O ");
 					}
-				}
-				else System.out.print("X ");
+				} else
+					System.out.print("X ");
 			}
 			System.out.println();
 		}
 
-	
 	}
+
 	// TODO:to be refactored
-		public boolean isCompleted() {
-			for (int i = 0; i < grid.length; i++) {
-				for (int j = 0; j < grid[0].length; j++) {
-					if (!grid[i][j].isVisible() && !grid[i][j].isMine()) {
-						return false;
-					}
+	public boolean isCompleted() {
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[0].length; j++) {
+				if (!grid[i][j].isVisible() && !grid[i][j].isMine()) {
+					return false;
 				}
 			}
-			return true;
 		}
+		return true;
+	}
 }
