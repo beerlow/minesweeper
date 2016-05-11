@@ -5,6 +5,7 @@ public class Grid {
 
 	public Grid(Cell[][] grid) {
 		this.grid = grid;
+		
 	}
 
 	public Cell[][] getGrid() {
