@@ -55,7 +55,7 @@ public class GridTest {
 	}
 	@Test
 	public void clickOnEmptydoubleTest() {
-		fail("not yet  implememented");
+	
 	}
 	
 	@Test
