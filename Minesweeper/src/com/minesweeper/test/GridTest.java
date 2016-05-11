@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.minesweeper.Cell;
-import com.minesweeper.Grid;
+import com.minesweeper.component.Cell;
+import com.minesweeper.component.Grid;
 
 public class GridTest {
 

@@ -2,7 +2,7 @@ package com.minesweeper.main;
 
 import java.util.Scanner;
 
-import com.minesweeper.Grid;
+import com.minesweeper.component.Grid;
 
 public class Main {
 

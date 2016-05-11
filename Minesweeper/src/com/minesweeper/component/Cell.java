@@ -1,4 +1,4 @@
-package com.minesweeper;
+package com.minesweeper.component;
 
 public class Cell {
 	private boolean mine = false;

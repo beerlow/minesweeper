@@ -1,4 +1,4 @@
-package com.minesweeper;
+package com.minesweeper.component;
 
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
